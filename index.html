@@ -67,12 +67,10 @@
         <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg mb-6">
             <h2 class="text-xl font-semibold text-blue-800 mb-3">How To Participate</h2>
             <ol class="list-decimal list-inside text-gray-700 space-y-2">
-                <li><strong>Complete the form below</strong> to request your free, no-obligation consultation.</li>
-                <li>After submitting your number, <strong>you will receive an instant call</strong> from a bot with a 4-digit OTP to verify your phone number. Please complete this step.</li>
-                <li>Once verified, you will see a confirmation page. <strong>Take a screenshot</strong> of this page.</li>
-                <li>For the research, you must <strong>call the toll-free number</strong> shown on the confirmation page. Please call during their operating hours (9 am - 9 pm EST).</li>
-                <li><strong>Upload your screenshot</strong> of the confirmation page in the verification section below to unlock the "Finish Survey" button.</li>
-                <li>After your call, <strong>send us an email</strong> with your feedback on the experience.</li>
+                <li><strong>Complete the form below.</strong> This is the primary action we are studying.</li>
+                <li>After submitting, you will see a confirmation page. <strong>Take a screenshot</strong> of this page.</li>
+                <li>A specialist will contact you in the next few days.</li>
+                <li>After you speak with them, <strong>email us your feedback</strong> to enter the voucher draw.</li>
             </ol>
         </div>
 
@@ -90,7 +88,7 @@
         <h2 class="text-2xl font-bold text-center text-gray-800 my-6">Step 1: Request Your Free Consultation Below</h2>
     
         <div class="w-full h-[600px] border-4 border-gray-200 rounded-lg overflow-hidden">
-            <iframe src="https://shareasale.com/r.cfm?b=221193&u=3237691&m=26522&urllink=&afftrack=" class="w-full h-full border-0"></iframe>
+            <iframe src="https://shareasale.com/r.cfm?b=2614898&u=3237691&m=26522&urllink=&afftrack=" class="w-full h-full border-0"></iframe>
         </div>
         
         <div class="p-4 bg-orange-50 border border-orange-200 rounded-lg mt-8">
@@ -139,12 +137,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const finishUrl = `https://spectrumsurveys.com/surveydone?st=21&transaction_id=${transactionId}`;
     
     abandonSurveyButton.addEventListener('click', function() {
-        window.open(abandonUrl, '_blank');
+        window.location.href = abandonUrl;
     });
 
     finishSurveyButton.addEventListener('click', function() {
         if (!this.classList.contains('disabled-btn')) {
-            window.open(finishUrl, '_blank');
+            window.location.href = finishUrl;
         }
     });
 
@@ -170,9 +168,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const lowerCaseText = text.toLowerCase();
             
-            // --- CORRECTED OCR VALIDATION LOGIC ---
-            // Looks for specific phrases from the tax debt confirmation page.
-            const confirmationKeywords = ['curadebt tax account executive', 'free case review'];
+            // Keywords for a tax debt confirmation page.
+            const confirmationKeywords = ['curadebt tax account executive', 'free case review', 'thank you for your submission'];
             const isConfirmed = confirmationKeywords.some(keyword => lowerCaseText.includes(keyword));
             
             if (isConfirmed) {
@@ -196,4 +193,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
+
 
