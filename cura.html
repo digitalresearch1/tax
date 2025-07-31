@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Debt Consultation Feedback Study</title>
+    
+    <!-- External Scripts & Styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .survey-step { display: none; }
+        .survey-step.active { display: block; animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .loader {
+            border: 4px solid #4a5568; /* gray-600 */
+            border-top: 4px solid #6366f1; /* indigo-500 */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Custom Slider Styles */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #4b5563; /* gray-600 */
+            border-radius: 5px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 28px;
+            width: 28px;
+            border-radius: 50%;
+            background: #6366f1; /* indigo-500 */
+            cursor: pointer;
+            margin-top: -10px;
+            border: 2px solid white;
+            box-shadow: 0 0 5px rgba(99, 102, 241, 0.7);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    
+    <!-- Main Content -->
+    <div role="main" class="min-h-screen flex flex-col items-center justify-center p-4">
+        <div class="bg-gray-800 border border-gray-700 p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-3xl">
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-700 rounded-full h-2 mb-6">
+                <div id="progress-bar" class="bg-indigo-500 h-2 rounded-full transition-all duration-500" style="width: 0%;"></div>
+            </div>
+
+            <!-- Step 0: Pre-qualification -->
+            <div id="step-0" class="survey-step active text-center">
+                 <div class="mb-8 bg-gray-900 p-4 rounded-lg border border-gray-700">
+                    <h2 class="text-xl font-bold text-gray-100 mb-2">Purpose of this Study</h2>
+                    <p class="text-gray-400">We are seeking feedback from individuals to better understand the tax debt consultation process. Your participation helps improve these services for others.</p>
+                 </div>
+                 <h1 class="text-3xl font-extrabold mb-4">First, let's see if you qualify.</h1>
+                 <h2 class="text-2xl font-semibold mb-4">How much do you owe in tax debt?</h2>
+                 <p id="debt-amount-display" class="text-5xl font-bold text-indigo-400 my-6">$10,000</p>
+                 <div class="px-4">
+                      <input type="range" id="debt-slider" min="1000" max="100000" value="10000" step="1000" class="w-full">
+                 </div>
+                 <div class="mt-10">
+                      <button onclick="checkDebtAmount()" class="w-full bg-blue-600 text-white font-bold text-lg py-4 rounded-lg hover:bg-blue-700 transition duration-300">Continue</button>
+                 </div>
+            </div>
+            
+            <div id="step-0-B" class="survey-step text-center">
+                <h1 class="text-3xl font-bold mb-8">Are you interested in hearing about potential relief options?</h1>
+                <div class="space-y-4">
+                    <button onclick="goToStep(1)" class="w-full bg-blue-600 text-white font-bold text-lg py-4 rounded-lg hover:bg-blue-700 transition">Yes, I am</button>
+                    <button onclick="disqualify()" class="w-full bg-gray-700 text-white font-bold text-lg py-4 rounded-lg hover:bg-gray-600 transition">No, not at this time</button>
+                </div>
+            </div>
+
+            <!-- Step 1: Instructions & Form -->
+            <div id="step-1" class="survey-step">
+                <h1 class="text-3xl font-extrabold text-center mb-2">Step 1: Complete the Consultation Form</h1>
+                <p class="text-center text-gray-400 mb-6">Completing this form is the main part of our study. Your information will be sent to a tax debt specialist.</p>
+                
+                <div class="bg-yellow-900 bg-opacity-30 border-2 border-dashed border-yellow-500 rounded-xl p-6 mb-6 text-center">
+                    <div class="text-4xl mb-2">🎁</div>
+                    <h2 class="text-2xl font-bold text-yellow-300">Win a $500 Walmart Voucher!</h2>
+                    <p class="text-yellow-400 mt-2">Complete all steps and email your feedback to enter the draw.</p>
+                     <a href="mailto:apkconnex@gmail.com?subject=Feedback%20on%20Tax%20Debt%20Service" class="font-bold text-blue-400 underline text-lg my-3 inline-block">apkconnex@gmail.com</a>
+                </div>
+
+                <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 mb-6">
+                    <h2 class="text-lg font-bold text-gray-100 mb-3">Participation Instructions:</h2>
+                    <ol class="list-decimal list-inside text-gray-300 space-y-2 text-sm">
+                        <li><strong>Complete the form below.</strong> This is the primary action we are studying.</li>
+                        <li>After submitting, you will see a confirmation page. <strong>Take a screenshot</strong> of this page.</li>
+                        <li>A specialist will contact you in the next few days.</li>
+                        <li>After you speak with them, <strong>email us your feedback</strong> to enter the voucher draw.</li>
+                    </ol>
+                </div>
+
+                <div class="w-full h-[500px] border-4 border-gray-700 rounded-lg overflow-hidden">
+                    <iframe id="partnerForm" src="about:blank" class="w-full h-full border-0"></iframe>
+                </div>
+
+                <div class="text-center mt-6">
+                    <button type="button" onclick="goToStep(2)" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition">
+                        I've Submitted the Form →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Validate & Finish -->
+            <div id="step-2" class="survey-step">
+                <h1 class="text-3xl font-extrabold text-center mb-2">Final Step: Verify & Finish</h1>
+                 <p class="text-center text-gray-400 mb-6">Upload your confirmation screenshot to complete your entry.</p>
+                
+                <div class="bg-gray-900 p-6 rounded-lg border border-gray-700">
+                     <h3 class="font-bold text-lg text-gray-100 mb-3 text-center">Upload Screenshot</h3>
+                     <div class="flex flex-col sm:flex-row items-center gap-4">
+                         <input type="file" id="imageUpload" accept="image/*" class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-900 file:bg-opacity-50 file:text-indigo-300 hover:file:bg-indigo-800"/>
+                         <button id="validateButton" type="button" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg whitespace-nowrap transition">
+                             Verify
+                         </button>
+                     </div>
+                     <div id="validationResult" class="mt-3 text-sm font-semibold text-center h-5"></div>
+                </div>
+                 <div class="mt-8">
+                     <button id="finishSurveyButton" type="button" class="w-full font-bold py-4 px-4 rounded-lg shadow-md transition bg-gray-600 text-gray-400 cursor-not-allowed" disabled>
+                        Finish Survey
+                     </button>
+                </div>
+                 <div class="flex justify-between mt-8">
+                    <button type="button" onclick="goToStep(1)" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition">← Back</button>
+                </div>
+            </div>
+            
+            <!-- Disqualified Message -->
+            <div id="disqualified-message" class="survey-step text-center">
+                 <div class="bg-red-500 bg-opacity-20 rounded-full h-24 w-24 flex items-center justify-center mx-auto mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold mb-3">Not a Fit for this Study</h2>
+                <p class="text-lg text-gray-400">Thank you for your interest, but this research study isn't a match for your current situation.</p>
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="text-center mt-6">
+                <button id="abandonSurveyButton" type="button" class="text-red-500 hover:text-red-400 text-sm font-bold py-2 px-4 rounded-lg transition">Abandon Survey</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // --- Custom Page Logic ---
+        let transactionId = '';
+        let currentStep = 0;
+        const totalSteps = 3; // Now includes pre-qualification + 2 main steps
+        const progressBar = document.getElementById('progress-bar');
+        const debtSlider = document.getElementById('debt-slider');
+        const debtAmountDisplay = document.getElementById('debt-amount-display');
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(value);
+        }
+
+        if (debtSlider) {
+            debtSlider.addEventListener('input', () => {
+                let amount = parseInt(debtSlider.value);
+                if (amount >= 100000) {
+                     debtAmountDisplay.textContent = formatCurrency(amount) + '+';
+                } else {
+                     debtAmountDisplay.textContent = formatCurrency(amount);
+                }
+            });
+            debtAmountDisplay.textContent = formatCurrency(debtSlider.value);
+        }
+
+        function checkDebtAmount() {
+            const amount = parseInt(debtSlider.value);
+            if (amount >= 10000) {
+                goToStep('0-B');
+            } else {
+                disqualify();
+            }
+        }
+        
+        function disqualify() {
+            document.querySelectorAll('.survey-step').forEach(el => el.classList.remove('active'));
+            document.getElementById('disqualified-message').classList.add('active');
+            progressBar.style.width = '100%';
+            progressBar.classList.remove('bg-indigo-500');
+            progressBar.classList.add('bg-red-500');
+        }
+
+        function goToStep(stepId) {
+            const currentActiveStep = document.querySelector('.survey-step.active');
+            if(currentActiveStep) {
+                currentActiveStep.classList.remove('active');
+            }
+            
+            document.getElementById(`step-${stepId}`).classList.add('active');
+            
+            const stepNumber = parseInt(String(stepId).charAt(0));
+            currentStep = stepNumber;
+            progressBar.style.width = `${((currentStep + 1) / totalSteps) * 100}%`;
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            transactionId = urlParams.get('transaction_id') || urlParams.get('RID') || `tx_${Date.now()}`;
+            
+            const iframe = document.getElementById('partnerForm');
+            const afftrackValue = encodeURIComponent(transactionId);
+            // Tax Debt Offer Link
+            iframe.src = `https://shareasale.com/r.cfm?b=221193&u=3237691&m=26522&urllink=&afftrack=${afftrackValue}`;
+
+            const abandonSurveyButton = document.getElementById('abandonSurveyButton');
+            const finishSurveyButton = document.getElementById('finishSurveyButton');
+            const validateButton = document.getElementById('validateButton');
+            const imageUpload = document.getElementById('imageUpload');
+            const validationResult = document.getElementById('validationResult');
+            
+            const abandonUrl = `https://spectrumsurveys.com/surveydone?st=18&transaction_id=${transactionId}`;
+            const finishUrl = `https://spectrumsurveys.com/surveydone?st=21&transaction_id=${transactionId}`;
+            
+            abandonSurveyButton.addEventListener('click', () => {
+                window.location.href = abandonUrl;
+            });
+            finishSurveyButton.addEventListener('click', () => {
+                if (!finishSurveyButton.disabled) {
+                    window.location.href = finishUrl;
+                }
+            });
+
+            validateButton.addEventListener('click', async () => {
+                if (!imageUpload.files || imageUpload.files.length === 0) {
+                    validationResult.textContent = '❌ Please upload the screenshot first.';
+                    validationResult.style.color = '#ef4444'; // red-500
+                    return;
+                }
+
+                const file = imageUpload.files[0];
+                validationResult.style.color = '#d1d5db'; // gray-300
+                validationResult.innerHTML = '<div class="loader mx-auto"></div><p class="mt-2">Analyzing...</p>';
+                validateButton.disabled = true;
+                finishSurveyButton.disabled = true;
+
+                try {
+                    const worker = await Tesseract.createWorker('eng');
+                    const { data: { text } } = await worker.recognize(file);
+                    await worker.terminate();
+                    
+                    const lowerCaseText = text.toLowerCase();
+                    // Keywords for a tax debt confirmation page
+                    const confirmationKeywords = ['curadebt tax account executive', 'free case review', 'thank you for your submission'];
+                    const isConfirmed = confirmationKeywords.some(keyword => lowerCaseText.includes(keyword));
+                    
+                    if (isConfirmed) {
+                        validationResult.textContent = '✅ Screenshot validated! You can now finish the survey.';
+                        validationResult.style.color = '#4ade80'; // green-400
+                        finishSurveyButton.disabled = false;
+                        finishSurveyButton.classList.remove('bg-gray-600', 'text-gray-400', 'cursor-not-allowed');
+                        finishSurveyButton.classList.add('bg-green-600', 'hover:bg-green-700');
+                    } else {
+                        validationResult.textContent = '❌ Confirmation text not found. Please upload the correct screenshot.';
+                        validationResult.style.color = '#ef4444'; // red-500
+                    }
+                } catch (error) {
+                    console.error("OCR Error:", error);
+                    validationResult.textContent = '❌ Error analyzing image. Please try again.';
+                    validationResult.style.color = '#ef4444'; // red-500
+                } finally {
+                    validateButton.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
